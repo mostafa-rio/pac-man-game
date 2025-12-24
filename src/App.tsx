@@ -50,7 +50,7 @@ function App() {
           <div className="text-4xl mb-8">
             {gameState === 'VICTORY' ? '🏆' : '💀'}
           </div>
-          <p className="text-2xl mb-4">Nurse: <span className="text-hospital-blue font-bold">{playerName}</span></p>
+          <p className="text-2xl mb-4">name: <span className="text-hospital-blue font-bold">{playerName}</span></p>
           <p className="text-2xl mb-8">Score: <span className="text-yellow-400 font-bold">{finalScore}</span></p>
           
           <button 

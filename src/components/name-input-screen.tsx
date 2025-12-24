@@ -17,12 +17,13 @@ const NameInputScreen: React.FC<IPropsForNameInputScreen> = ({ onStartGame }) =>
   return (
     <div className="flex flex-col items-center justify-center w-full h-full bg-slate-900 text-white p-4">
       <h1 className="text-4xl md:text-6xl font-bold mb-8 text-center text-hospital-blue">
-        Hospital Quest
+        <p>Gigili</p>
+        <p className="text-xs">(this game is developed to honor the memory of all healthcare workers who put their lives on the line)</p>
       </h1>
       <div className="text-6xl mb-8 animate-bounce">👩‍⚕️</div>
       <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 w-full max-w-md">
         <label htmlFor="playerName" className="text-xl">
-          Enter Nurse Name:
+          Enter Your Name:
         </label>
         <input
           id="playerName"
@@ -30,7 +31,7 @@ const NameInputScreen: React.FC<IPropsForNameInputScreen> = ({ onStartGame }) =>
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-600 focus:border-hospital-blue focus:outline-none text-center text-xl"
-          placeholder="Nurse Joy"
+          placeholder="your name"
           autoFocus
           required
           maxLength={15}
