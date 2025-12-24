@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import NameInputScreen from './components/name-input-screen';
 import GameBoard from './components/game-board';
 
