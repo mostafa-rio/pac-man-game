@@ -147,3 +147,69 @@ export const getEnemyStartPositions = (): IPosition[] => {
   
   return positions;
 };
+
+// BFS Pathfinding to get the next best move direction
+export const getBestDirection = (
+  start: IPosition,
+  target: IPosition,
+  currentDirection: Direction,
+  validDirections: Direction[]
+): Direction => {
+  const startX = Math.round(start.x);
+  const startY = Math.round(start.y);
+  const targetX = Math.round(target.x);
+  const targetY = Math.round(target.y);
+
+  // If already at target, pick any valid direction to keep moving
+  if (startX === targetX && startY === targetY) {
+    return validDirections[Math.floor(Math.random() * validDirections.length)];
+  }
+
+  // Queue for BFS: { x, y, firstMove }
+  // We want to find which of the 'validDirections' leads to the shortest path
+  const queue: { x: number; y: number; firstMove: Direction | null }[] = [];
+  const visited = new Set<string>();
+
+  // Initialize queue with valid immediate moves
+  validDirections.forEach(dir => {
+    let nextX = startX;
+    let nextY = startY;
+    if (dir === 'UP') nextY -= 1;
+    if (dir === 'DOWN') nextY += 1;
+    if (dir === 'LEFT') nextX -= 1;
+    if (dir === 'RIGHT') nextX += 1;
+
+    if (!isWall(nextX, nextY)) {
+      queue.push({ x: nextX, y: nextY, firstMove: dir });
+      visited.add(`${nextX},${nextY}`);
+    }
+  });
+
+  // BFS Loop
+  while (queue.length > 0) {
+    const { x, y, firstMove } = queue.shift()!;
+
+    if (x === targetX && y === targetY) {
+      return firstMove!;
+    }
+
+    // Explore neighbors
+    const neighbors = [
+      { x: x, y: y - 1 }, // UP
+      { x: x, y: y + 1 }, // DOWN
+      { x: x - 1, y: y }, // LEFT
+      { x: x + 1, y: y }, // RIGHT
+    ];
+
+    for (const n of neighbors) {
+      const key = `${n.x},${n.y}`;
+      if (!visited.has(key) && !isWall(n.x, n.y)) {
+        visited.add(key);
+        queue.push({ x: n.x, y: n.y, firstMove });
+      }
+    }
+  }
+
+  // Fallback: If no path found (unreachable), just pick random valid
+  return validDirections[Math.floor(Math.random() * validDirections.length)];
+};

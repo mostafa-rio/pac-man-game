@@ -1,7 +1,7 @@
 export const CELL_SIZE = 20; // This might be dynamic based on screen size
 export const FPS = 60;
 export const MOVEMENT_SPEED = 0.1; // Cells per frame (approx 6 cells/sec)
-export const ENEMY_SPEED = 0.043; // Slightly slower than player
+export const ENEMY_SPEED = 0.04; // Slightly slower than player
 export const ENEMY_COUNT = 8; // Number of enemies to spawn
 
 export const ITEM_VALUES = {
