@@ -5,7 +5,7 @@ import MazeGrid from './maze-grid';
 import GameEntity from './game-entity';
 import ItemRenderer from './item-renderer';
 import { useGameLoop } from '../hooks/use-game-loop';
-import { getInitialItems, getStartPosition, getEnemyStartPositions, getNextPosition, isValidMove, isWall, getBestDirection } from '../utils/game-logic';
+import { getInitialItems, getStartPosition, getEnemyStartPositions, getNextPosition, isValidMove, isWall } from '../utils/game-logic';
 
 interface IPropsForGameBoard {
   playerName: string;
@@ -246,15 +246,18 @@ const GameBoard: React.FC<IPropsForGameBoard> = ({ playerName, onGameOver, onVic
              targetY = corner.y;
           }
 
-          // Move Logic: Use BFS for smart pathfinding
-          // 95% chance to be smart, 5% random error to feel organic
-          if (Math.random() > 0.05) {
-             enemy.direction = getBestDirection(
-                 enemy.position, 
-                 { x: targetX, y: targetY }, 
-                 enemy.direction, 
-                 candidates
-             );
+          // Move Logic: Sort candidates by distance to target
+          // Add some randomness to avoid perfect tracking
+          if (Math.random() > 0.1) { // 90% chance to be smart (increased from 80%)
+             candidates.sort((a, b) => {
+                 const posA = getNextPosition(enemy.position, a, enemy.speed);
+                 const posB = getNextPosition(enemy.position, b, enemy.speed);
+                 const distA = Math.pow(targetX - posA.x, 2) + Math.pow(targetY - posA.y, 2);
+                 const distB = Math.pow(targetX - posB.x, 2) + Math.pow(targetY - posB.y, 2);
+                 return distA - distB;
+             });
+             // Pick the best one
+             enemy.direction = candidates[0];
           } else {
              // Random choice
              enemy.direction = candidates[Math.floor(Math.random() * candidates.length)];

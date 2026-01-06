@@ -152,7 +152,6 @@ export const getEnemyStartPositions = (): IPosition[] => {
 export const getBestDirection = (
   start: IPosition,
   target: IPosition,
-  currentDirection: Direction,
   validDirections: Direction[]
 ): Direction => {
   const startX = Math.round(start.x);
